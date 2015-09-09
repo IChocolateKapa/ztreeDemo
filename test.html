@@ -10,9 +10,11 @@
     function startSort(){
         var a=document.getElementById('s').value;
         a=a.split(',')
-        a.sort();
-        document.getElementById('r1').value=a;
+        console.log("a: ", a);
+//        a.sort();
+//        document.getElementById('r1').value=a;
         a.sort(function(a,b){return a.localeCompare(b)});//汉字拼音排序方法
+        console.log(a)
         document.getElementById('r2').value=a;
     }
 

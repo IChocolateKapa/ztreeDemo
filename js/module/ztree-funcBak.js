@@ -275,14 +275,9 @@ var setting = {
 var zNodes =[
     { id:1, pId:0, name:"我的程序", open:true},
     { id:11, pId:1, name:"常用程序"},
-    { id:12, pId:1, name:"不用程序"},
-    { id:121, pId:12, name:"YYY用程序"},
-    { id:13, pId:1, name:"你用程序"},
-    { id:131, pId:13, name:"A用程序"},
     { id:111, pId:11, name:"Shared file"},
     { id:112, pId:11, name:"Executable file"},
     { id:113, pId:11, name:"Portable object files"},
-    { id:113, pId:11, name:"Aortable object files"},
     { id:2, pId:0, name:"王小明01的程序"},
     { id:21, pId:2, name:"常用程序"},
     { id:211, pId:21, name:"Portable files"},
@@ -368,71 +363,49 @@ $(function(){
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         var curTid = $this.closest("li").attr("id");
         var curNode = zTree.getNodeByParam("tId", curTid);
-
+        var curNodeParent  = curNode.getParentNode();
         var curNodeChildren = curNode.children;
         var lenChildren = curNodeChildren.length;
 
+
         /*图标为升序，进行升序排列*/
         if($this.hasClass("sheng")){
+            $this.removeClass("sheng");
+            $this.addClass("jiang");
             /*升序排列*/
             /*子节点数目大于1时才进行排序*/
-
             if(lenChildren > 1){
+
                 /*这个是对汉字拼音的排序， 返回的是排序好的子节点数组*/
-                curNodeChildren = curNodeChildren.sort(function(a,b){return a.name.localeCompare(b.name)});
-                /*这里是最关键的，数组克隆*/
-                /*如果不克隆的话，每当remove掉一个，原来的数组就少一个值，循环会中断*/
-                curNodeChildrenBak = curNodeChildren.slice(0);
+                curNodeChildrenBak = curNodeChildren.sort(function(a,b){return a.name.localeCompare(b.name)});
+
                 for(var i = 0; i < lenChildren; i++){
 
-                    var curSelNode = zTree.getNodeByParam("id", curNodeChildrenBak[i].id);
+                    var callbackFlag = $("#callbackTrigger").attr("checked");
+                    zTree.removeNode(curNodeChildrenBak[i], callbackFlag);
 
-                    zTree.removeNode(curSelNode);
-
-                    console.log("curSelNode", i, ": ", curSelNode);
-
-                    var newNode = zTree.addNodes(curNode, curSelNode);
-                    console.log("newNode: ", newNode);
-                    //$(".ztree li.level0>a, .ztree li.level1>a").append("<i class='btn-sort sheng'>");
-
-
-                    $this.removeClass("sheng");
-                    $this.addClass("jiang");
                 }
-            }
 
-            curNodeChildren = curNode.children;
+                console.log("curNodeChildren: ", curNodeChildren);
+
+                /*for(var i = 0; i < lenChildren; i++){
+
+                    var curSelNode = curNodeChildren[i];
+                    zTree.addNodes(curNode, curSelNode);
+
+                }*/
+            }
 
 
         } else {
-
-            /*降序排列*/
-            /*子节点数目大于1时才进行排序*/
-            if(curNodeChildren.length > 1){
-                /*这个是对汉字拼音的排序， 返回的是排序好的子节点数组*/
-                curNodeChildren = curNodeChildren.sort(function(a,b){return a.name.localeCompare(b.name)});
-
-                /*这里是最关键的，数组克隆*/
-                /*如果不克隆的话，每当remove掉一个，原来的数组就少一个值，循环会中断*/
-                curNodeChildrenBak = curNodeChildren.slice(0);
-                console.log("降序时， curNodeChildrenBak： ", curNodeChildrenBak);
-                for(var i = lenChildren-1; i > -1; i--){
-
-                    var curSelNode = zTree.getNodeByParam("id", curNodeChildrenBak[i].id);
-
-                    zTree.removeNode(curSelNode);
-
-                    console.log("curSelNode", i, ": ", curSelNode);
-
-                    zTree.addNodes(curNode, curSelNode);
-                    //$(".ztree li.level0>a, .ztree li.level1>a").append("<i class='btn-sort sheng'>");
-                }
-            }
-
-
             /*图标为降序， 进行降序排列*/
             $this.addClass("sheng");
             $this.removeClass("jiang");
+            /*降序排列*/
+            /*子节点数目大于1时才进行排序*/
+            if(curNodeChildren.length > 1){
+
+            }
 
         }
     })
