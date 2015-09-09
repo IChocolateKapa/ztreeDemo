@@ -1504,6 +1504,8 @@
 			data.initRoot(setting);
 			var root = data.getRoot(setting),
 			childKey = setting.data.key.children;
+
+			console.log("ROOT: ", root);
 			zNodes = zNodes ? tools.clone(tools.isArray(zNodes)? zNodes : [zNodes]) : [];
 			if (setting.data.simpleData.enable) {
 				root[childKey] = data.transformTozTreeFormat(setting, zNodes);

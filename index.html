@@ -16,12 +16,13 @@
     <style>
         ul{ margin:0; padding:0;}
         .ztree * {font-size: 15px; font-family: "Microsoft Yahei";}
+        .ztree{ padding: 5px 0 0 0;}
         .ztree li {line-height:30px;}
-        .ztree li a {/*width:200px;*/height:30px; padding: 0 15px;  /*width: 100%;*/}
+        .ztree li a {/*width:200px;*/height:30px; /*padding: 0 15px; */ width: 100%;}
         .ztree li a:hover {text-decoration:none; background-color: #bcddf1;}
         .ztree li a span.button.switch {visibility:hidden}
         .ztree.showIcon li a span.button.switch {visibility:visible}
-        .ztree li a.curSelectedNode {background-color:#bcddf1; border:0; height:30px; padding: 0 15px;  /*width: 100%;*/ opacity: 1}
+        .ztree li a.curSelectedNode {background-color:#bcddf1; border:0; height:30px; /*padding: 0 15px;*/  width: 100%; opacity: 1}
         .ztree li span {line-height:30px;  width: 100%;}
         .ztree li span.button {margin-top: -7px;}
         .ztree li span.button.switch {width: 16px;height: 16px;}
@@ -39,13 +40,17 @@
             margin-top: 10px;}
 
         .btn-half { background-position: -1px -27px; width: 15px; height: 11px; }
-        .btn-sort { background-position: -1px -39px; width: 13px; height: 13px; }
+        .btn-sort{width: 13px; height: 13px;  position: absolute;margin-top: 10px;margin-left: 5px;}
+        .btn-sort.sheng{ background: url("images/shengxu.png");}
+        .btn-sort.jiang{ background: url("images/jiangxu.png");}
 
         .ztree .level1 .button.ico_open{ background-position: -1px -27px; width: 15px; height: 11px;}
-        .ztree .level1 .button.ico_close{ background-position: -1px -39px; width: 13px; height: 13px; }
+        /*.ztree .level1 .button.ico_close{ background-position: -1px -39px; width: 13px; height: 13px; }*/
         /*.ztree .level2 a>span:nth-of-type(1){display: none !important;}*/
         .container{position: absolute; top: 31px; left: -1px;z-index: 99999 !important; background: white; width: 214px; height: 400px; overflow: scroll;
             border: 1px solid #e5e5e5;}
+
+
     </style>
     <!--自定义 结束-->
 

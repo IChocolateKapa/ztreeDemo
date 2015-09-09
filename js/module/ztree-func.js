@@ -59,10 +59,33 @@ function addDiyDom(treeId, treeNode) {
 
 function beforeClick(treeId, treeNode) {
     /*点击第一层文字时， 异步加载数据*/
-    var zSTNodes = [
-        {}
-    ]
     if(treeNode.level == 0){
+        var addFlag = true;
+        /*仅在没有加载过数据时加载*/
+        if(!addFlag){
+            var zSTNodes = [
+                { id:41, pId:4, name:"Documents"},
+                { id:42, pId:4, name:"Photos"},
+                { id:411, pId:41, name:"DDDDD"}
+            ];
+            var curName = treeNode.name;
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+            //nodes = zTree.getSelectedNodes(),
+            //treeNode = nodes[0],
+                parTreeNode = treeNode.getParentNode();
+
+            console.log(treeNode.level);
+
+            for(var i = 0; i < zSTNodes.length; i++){
+                var strPid = zSTNodes[i].pId+"";
+                if(strPid.length == 1){
+                    var isP = true;
+                } else {
+                    var isP = false;
+                }
+                zTree.addNodes(treeNode, {id:(zSTNodes[i].id + newCount), pId:zSTNodes[i].pId, isParent:isP, name:"新建文件夹" + (newCount++)});
+            }
+        }
 
     }
 
@@ -202,6 +225,7 @@ function remove(e) {
 
 
 var curProgramNode = null, zTree_Menu = null;
+var yoururl = "http://www.baidu.com";
 var setting = {
     edit: {
         drag: {
@@ -238,30 +262,63 @@ var setting = {
     }
 };
 
+/*function dblClickExpand(treeId, treeNode){
+    if(treeNode.level == 0){
+        var zSTNodes = [
+            { id:41, pId:4, name:"Documents"},
+            { id:42, pId:4, name:"Photos"},
+            { id:411, pId:41, name:"DDDDD"}
+        ];
+        var curName = treeNode.name;
+        //$.ajax({})
+        /!*假设现在或得到的数据如上*!/
+        var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+        //nodes = zTree.getSelectedNodes(),
+        //treeNode = nodes[0],
+            parTreeNode = treeNode.getParentNode();
+
+        console.log(treeNode.level);
+
+        for(var i = 0; i < zSTNodes.length; i++){
+            var strPid = zSTNodes[i].pId+"";
+            if(strPid.length == 1){
+                var isP = true;
+            } else {
+                var isP = false;
+            }
+            zTree.addNodes(treeNode, {id:(zSTNodes[i].id + newCount), pId:zSTNodes[i].pId, isParent:isP, name:"新建文件夹" + (newCount++)});
+        }
+
+        return true;
+    } else {
+        return true;
+    }
+}*/
+
+var zNodes2 = [];
 var zNodes =[
     { id:1, pId:0, name:"我的程序", open:true},
     { id:11, pId:1, name:"常用程序"},
-    { id:111, pId:11, name:"Portable file"},
+    { id:12, pId:1, name:"常用程序"},
+    { id:121, pId:12, name:"常用程序"},
+    { id:111, pId:11, name:"常用程序"},
     { id:112, pId:11, name:"Executable file"},
     { id:113, pId:11, name:"Shared object files"},
     { id:2, pId:0, name:"王小明01的程序"},
-    { id:21, pId:2, name:"常用程序"},
-    { id:211, pId:21, name:"Portable files"},
-    { id:22, pId:2, name:"不常用程序"},
+    //{ id:21, pId:2, name:"常用程序"},
+    //{ id:211, pId:21, name:"Portable files"},
+    //{ id:22, pId:2, name:"不常用程序"},
     { id:3, pId:0, name:"张明04的程序"},
-    { id:31, pId:3, name:"Documents"},
-    { id:32, pId:3, name:"Photos"},
+    //{ id:31, pId:3, name:"Documents"},
+    //{ id:32, pId:3, name:"Photos"},
     { id:4, pId:0, name:"李明明的程序"},
-    { id:41, pId:4, name:"Documents"},
-    { id:42, pId:4, name:"Photos"},
+    //{ id:41, pId:4, name:"Documents"},
+    //{ id:42, pId:4, name:"Photos"},
     { id:5, pId:0, name:"赵大明01的程序"},
-    { id:51, pId:5, name:"Documents"},
-    { id:52, pId:5, name:"Photos"}
+    //{ id:51, pId:5, name:"Documents"},
+    //{ id:52, pId:5, name:"Photos"}
 ];
 
-function focusOn(treeId, treeNode){
-    //模拟点击事件，切换显示的程序内容，并更新各按钮的状态
-}
 
 
 var newCount = 1;
@@ -310,15 +367,59 @@ $(function(){
     var treeObj = $("#treeDemo");
     treeObj.addClass("showIcon");
     $.fn.zTree.init(treeObj, setting, zNodes);
+
     zTree_Menu = $.fn.zTree.getZTreeObj("treeDemo");
     curProgramNode = zTree_Menu.getNodes()[0]/*.children[0].children[0]*/;
     zTree_Menu.selectNode(curProgramNode);
+    //console.log("Roots: ",$.fn.zTree.data.getRoot(setting) );
     $("#edit").bind("click", edit);
     $("#remove").bind("click", remove);
     $("#add").bind("click", add);
+    //initRoot();
+    /*当有新节点生成时需要调用这个方法进行加载排序图标*/
+    setSortIcon();
 
+    /*点击排序时*/
+    $(".ztree li.level0>a, .ztree li.level1>a").on("click", ".btn-sort", function(){
+        var $this = $(this);
+        console.log("$this: ", $this);
+        /*图标为升序，进行升序排列*/
+        if($this.hasClass("sheng")){
+            $this.removeClass("sheng");
+            $this.addClass("jiang");
+            /*升序排列*/
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
 
-    var treeObj2 = $("#tree2");
-    treeObj2.addClass("showIcon");
-    $.fn.zTree.init(treeObj2, setting, zNodes);
+        } else {
+            /*图标为降序， 进行降序排列*/
+            $this.addClass("sheng");
+            $this.removeClass("jiang");
+            /*降序排列*/
+
+        }
+    })
 });
+
+
+function initRoot(){
+    var zSTNodes = [
+        { id:1, pId:0, name:"Documents"},
+        { id:2, pId:0, name:"Photos"},
+        { id:3, pId:0, name:"DDDDD"}
+    ];
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+
+    for(var i = 0; i < zSTNodes.length; i++){
+        zTree.addNodes(zTree, {id:(i + 1), pId:0, isParent:true, name:"新建文件夹" + (i++)});
+    }
+
+}
+
+
+function setSortIcon(){
+    if(!$(".ztree li.level0>a>i, .ztree li.level1>a>i").hasClass("btn-sort")){
+        $(".ztree li.level0>a, .ztree li.level1>a").append("<i class='btn-sort sheng'>");
+    }
+}
+
+
