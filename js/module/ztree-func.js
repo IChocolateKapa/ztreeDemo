@@ -321,11 +321,13 @@ function add() {
             /*ok*/
             treeNode = zTree.addNodes(treeNode, {id:(pid2 + newCount), pId: pid2, isParent:false, name:"程序文件" + (newCount++)});
         } else if(level == 2){
-            /*not ok,加在了子级别*/
+            /*第3层，添加第三层文件*/
             treeNode = zTree.addNodes(parTreeNode, {id:(pid3 + newCount), pId:pid3, isParent:false, name:"程序文件" + (newCount++)});
         } else {
             /*ok*/
+            /*第1层，添加第2层文件夹*/
             treeNode = zTree.addNodes(treeNode, {id:(pid2 + newCount), pId:pid2, isParent:true, name:"新建文件夹" + (newCount++)});
+            $("#"+treeNode.tId).children("a").append("<i class='btn-sort sheng'>");
         }
 
     }
@@ -349,60 +351,16 @@ $(function(){
     $("#add").bind("click", add);
 
 
-    /*当有新节点生成时需要调用这个方法进行加载排序图标*/
+    /*初始化时进行加载排序图标*/
     setSortIcon();
 
+
     /*点击排序时*/
-    //$(".ztree, .ztree").on("click", "li.level0>a .btn-sort, li.level0>a  .btn-sort", function(){
-    $(".ztree li.level0>a, .ztree li.level1>a").on("click", ".btn-sort", function(){
+    $(".ztree").on("click", ".btn-sort", function(){
         var $this = $(this);
-        var closetLi = $this.closest("li");
-        var curUL = closetLi.children("ul");
-        var curLi = curUL.children("li");
-
-
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-
-
-        var data = {};
-        var dataArr = [];
-        curLi.each(function(index, ele){
-            var id = $(ele).attr("id");
-            var curNode = zTree.getNodeByParam("tId", id);
-            data[id] = ele;
-            dataArr.push(curNode);
-        });
-
-        /*这个是对汉字拼音的排序， 返回的是排序好的子节点数组*/
-        var dataNew = dataArr.sort(function(a,b){return a.name.localeCompare(b.name)});
-        $(curUL).empty();
-
-        /*图标为升序，进行升序排列*/
-        if($this.hasClass("sheng")){
-            /*升序排列*/
-            /*子节点数目大于1时才进行排序*/
-            $this.removeClass("sheng");
-            $this.addClass("jiang");
-
-            for(var i = 0; i < dataNew.length; i++){
-                var idTar = dataNew[i].tId;
-                $(curUL).append(data[idTar]);
-            }
-        } else {
-            /*图标为降序， 进行降序排列*/
-            $this.addClass("sheng");
-            $this.removeClass("jiang");
-            /*降序排列*/
-            /*子节点数目大于1时才进行排序*/
-            for(var i = 0; i < dataNew.length; i++){
-                var idTar = dataNew[i].tId;
-                $(curUL).prepend(data[idTar]);
-            }
-
-        }
-        eventUtil.preventDefault(event);
-        eventUtil.stopPropagation(event);
+        sortNodes($this);
     })
+
 
 });
 
@@ -429,3 +387,51 @@ function setSortIcon(){
 }
 
 
+function sortNodes($this){
+    var closetLi = $this.closest("li");
+    var curUL = closetLi.children("ul");
+    var curLi = curUL.children("li");
+
+
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+
+
+    var data = {};
+    var dataArr = [];
+    curLi.each(function(index, ele){
+        var id = $(ele).attr("id");
+        var curNode = zTree.getNodeByParam("tId", id);
+        data[id] = ele;
+        dataArr.push(curNode);
+    });
+
+    /*这个是对汉字拼音的排序， 返回的是排序好的子节点数组*/
+    var dataNew = dataArr.sort(function(a,b){return a.name.localeCompare(b.name)});
+    $(curUL).empty();
+
+    /*图标为升序，进行升序排列*/
+    if($this.hasClass("sheng")){
+        /*升序排列*/
+        /*子节点数目大于1时才进行排序*/
+        $this.removeClass("sheng");
+        $this.addClass("jiang");
+
+        for(var i = 0; i < dataNew.length; i++){
+            var idTar = dataNew[i].tId;
+            $(curUL).append(data[idTar]);
+        }
+    } else {
+        /*图标为降序， 进行降序排列*/
+        $this.addClass("sheng");
+        $this.removeClass("jiang");
+        /*降序排列*/
+        /*子节点数目大于1时才进行排序*/
+        for(var i = 0; i < dataNew.length; i++){
+            var idTar = dataNew[i].tId;
+            $(curUL).prepend(data[idTar]);
+        }
+
+    }
+    eventUtil.preventDefault(event);
+    eventUtil.stopPropagation(event);
+}
