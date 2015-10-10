@@ -6,6 +6,7 @@
     <title>异步加载测试</title>
     <link rel="stylesheet" href="css/base.css"/>
     <link rel="stylesheet" href="css/lib/zTreeStyle/zTreeStyle.css"/>
+    <link rel="stylesheet" href="js/lib/eModal/css/modal.css"/>
     <script src="js/lib/jquery-2.1.3.min.js"></script>
     <script src="js/lib/zTree/jquery.ztree.core-3.5.js"></script>
     <script src="js/lib/zTree/jquery.ztree.excheck-3.5.min.js"></script>
@@ -15,13 +16,7 @@
     <script src="js/module/ztree-func.js"></script>
 
     <style>
-        ul{ margin:0; padding:0;}
-        .ztree * {font-size: 15px; font-family: "Microsoft Yahei";}
-        .ztree{ padding: 5px;}
-        .ztree li {line-height:30px;}
-        .ztree li a {min-width:200px;height:30px; /*padding: 0 15px; */ width: 100%; position: relative}
-        .ztree li a:hover {text-decoration:none; background-color: #bcddf1;}
-        .ztree li a span.button.switch {visibility:hidden}
+        .ztree li a span.button.switch {visibility:visible}
         .ztree.showIcon li a span.button.switch {visibility:visible}
         .ztree li a.curSelectedNode {background-color:#bcddf1; border:0; height:30px; /*padding: 0 15px;*/  width: 100%; opacity: 1}
         .ztree li span {line-height:30px;  width: 100%;}
@@ -29,27 +24,43 @@
         .ztree li span.button.switch {width: 16px;height: 16px;}
 
         .ztree li span.button {background-image:url("images/btn-icon.png");}
-        .ztree li span.button.noline_open,
-        .ztree li span.button.noline_open.level0 { background-position: -1px -53px; width: 6px; height: 6px; margin-right: 8px;
-            margin-top: 3px;}
-        .ztree li span.button.noline_close,
-        .ztree li span.button.noline_close.level0 {background-position: -8px -53px; width: 5px; height: 8px; margin-right: 8px; margin-top: 1px;}
 
-        .ztree li span.button.ico_open{background-position: -1px -0px; width: 16px; height: 13px; margin-right: 6px;
-            margin-top: 10px;}
-        .ztree li span.button.ico_close{background-position: -1px -14px; width: 15px; height: 12px; margin-right: 8px;
-            margin-top: 10px;}
+        /*文件夹图标前面的小箭头*/
+        .ztree li span.button.noline_open,
+        .ztree li span.button.noline_open.level0 { background-position: -1px -53px; width: 6px; height: 6px; margin-right: 8px; margin-top: 3px;}
+
+        /*文件夹图标*/
+        .ztree li span.button.ico_open{background-position: -1px -0px; width: 16px; height: 13px; margin-right: 6px; margin-top: 10px;}
+        .ztree li span.button.ico_close{background-position: -1px -14px; width: 15px; height: 12px; margin-right: 8px; margin-top: 10px;}
 
         .btn-half { background-position: -1px -27px; width: 15px; height: 11px; }
+
+        /*升序降序的图标*/
         .btn-sort{width: 13px; height: 13px;  position: absolute;margin-top: 10px;margin-left: 5px;}
         .btn-sort.sheng{ background: url("images/shengxu.png");}
         .btn-sort.jiang{ background: url("images/jiangxu.png");}
 
-        .ztree .level1 .button.ico_open{ background-position: -1px -27px; width: 15px; height: 11px;}
+        /*二级目录的文件夹图标*/
+        .ztree>li.level0:nth-of-type(1) .level1 .button.ico_open,
+        .ztree>li.level0:nth-of-type(2) .level2 .button.ico_open{background-position: -1px -27px; width: 15px; height: 11px;}
 
-        .ztree .level0 span.button.ico_docu{background-position: -1px -14px; width: 15px; height: 12px; margin-right: 8px;
-            margin-top: 10px;}
-        .ztree .level2 span.button.ico_docu{background: url("images/file.png"); width: 15px; height: 12px; margin-right: 8px;margin-top: 10px;}
+        .ztree .level1 span.button.ico_docu,
+        .ztree .level2 span.button.ico_docu{background-position: -1px -14px; width: 15px; height: 12px; margin-right: 8px;margin-top: 10px;}
+
+        /*我的程序中程序文件和共享程序中的程序文件前面展示的图标*/
+        .ztree>li.level0:nth-of-type(2) .level3 span.button.ico_docu,
+        .ztree>li.level0:nth-of-type(1) .level2 span.button.ico_docu{background: url("images/file.png"); width: 12px; height: 12px; margin-right: 8px;margin-top: 10px;}
+
+
+        .ztree .level0 span.button.noline_docu,
+        .ztree .level1 span.button.noline_docu,
+        .ztree li span.button.noline_close,
+        .ztree li span.button.noline_close.level0 {background-position: -8px -53px; width: 5px; height: 8px; margin-right: 8px; margin-top: 1px;}
+
+        /*在我的程序中是第三层文件， 在共享程序中第四层是程序文件*/
+        .ztree>li.level0:nth-of-type(1) .level2 span.button.noline_docu,
+        .ztree>li.level0:nth-of-type(2) .level3 span.button.noline_docu{background: none;}
+
 
         .container{position: absolute; top: 31px; left: 8px;z-index: 99999 !important; background: white; width: 214px; height: 400px; overflow: scroll;
             border: 1px solid #e5e5e5;}
