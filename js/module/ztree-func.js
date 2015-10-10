@@ -2,6 +2,44 @@
  * Created by 58 on 2015/9/6.
  */
 
+/*获取当前树的level*/
+function getCurLevel(treeNode){
+    var curLevel;
+    if(treeNode.level == 0){
+        if(treeNode.name == "我的程序"){
+            curLevel = 0
+        } else if(treeNode.name == "共享程序"){
+            curLevel = -1
+        }
+    } else if(treeNode.level == 1){
+        var parentNode = treeNode.getParentNode();
+        //var parentNode = zTree.getNodeByParam("tId",  treeNode.parentTId);
+
+        if(parentNode.name == "我的程序"){
+            curLevel = 1;
+        } else if(parentNode.name == "共享程序"){
+            curLevel = 0;
+        }
+    } else if(treeNode.level == 2){
+        var parent_parentNode = treeNode.getParentNode().getParentNode();
+        //var parentNode = zTree.getNodeByParam("tId",  treeNode.parentTId);
+        if(parent_parentNode.name == "我的程序"){
+            curLevel = 2;
+        } else if(parent_parentNode.name == "共享程序"){
+            curLevel = 1;
+        }
+    } else {
+        /*只有共享程序中会有第四层*/
+        curLevel = 2;
+    }
+
+    return curLevel;
+}
+
+
+
+
+
 function dropPrev(treeId, nodes, targetNode) {
     var pNode = targetNode.getParentNode();
     if (pNode && pNode.dropInner === false) {
@@ -58,15 +96,18 @@ function addDiyDom(treeId, treeNode) {
 }
 
 function beforeClick(treeId, treeNode) {
+    var curLevel =  getCurLevel(treeNode);
+
+
     /*点击第一层文字时， 异步加载数据*/
-    if(treeNode.level == 0){
-        var addFlag = false;
+    if(curLevel == 0){
+        var addFlag = true;
         /*仅在没有加载过数据时加载*/
-        if(addFlag){
+        if(!addFlag){
             var zSTNodes = [
-                { id:41, pId:4, name:"Documents"},
-                { id:42, pId:4, name:"Photos"},
-                { id:411, pId:41, name:"DDDDD"}
+                { id:211, pId:21, name:"Documents", description: "12"},
+                { id:221, pId:22, name:"Photos", description: "e3q"},
+                { id:223, pId:22, name:"DDDDD", description: "t543w"}
             ];
             var curName = treeNode.name;
             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
@@ -78,31 +119,34 @@ function beforeClick(treeId, treeNode) {
                 } else {
                     var isP = false;
                 }
-                zTree.addNodes(treeNode, {id:(zSTNodes[i].id + newCount), pId:zSTNodes[i].pId, isParent:isP, name:"新建文件夹" + (newCount++)});
+                var newNode = zTree.addNodes(
+                    treeNode,
+                    {
+                        id:(zSTNodes[i].id + newCount),
+                        pId:zSTNodes[i].pId,
+                        isParent:isP,
+                        name:"新建文件夹" + (newCount++),
+                        description: zSTNodes[i].description
+                    },
+                    true);
+
+                $("#"+newNode[0].tId).children("a").append("<i class='btn-sort sheng'>");
             }
         }
     }
 
-
-
     /*点击第三层文件时*/
-    if (treeNode.level == 2 ) {
+    if (curLevel == 2 ) {
         $(".editor_ask").hide();
         $("#editor").show();
         /*如何检测内容发生了变化*/
         var curtEXT = editor.getValue();
         if(changeFlag){
             //询问框
-            var cfm = layer.confirm('是否需要保存文件？', {
-                btn: ['是','否'] //按钮
-            }, function(){
+            eModal.confirm('是否需要保存文件？', function(){
                 /*进行保存， 成功或者失败提示*/
-                layer.close(cfm);
                 //结果提示信息框
-                layer.msg('这成功或者失败？？');
-                editor.setValue("the new text here1");
-            }, function(){
-                editor.setValue("the new text here2");
+                editor.setValue("提示：请在“我的程序”里选");
             });
 
             changeFlag = false;
@@ -114,6 +158,7 @@ function beforeClick(treeId, treeNode) {
         $(".editor_ask").show();
         $("#editor").hide();
     }
+
     return true;
 }
 
@@ -155,27 +200,23 @@ function onExpand(event, treeId, treeNode) {
 
 function beforeRemove(treeId, treeNode) {
     className = (className === "dark" ? "":"dark");
-    var ret;
-    var cfm = layer.confirm("C确定删除节点  '" + treeNode.name + "' 吗?", function(){
+    var ret = false;
+    eModal.confirm("C确定删除节点  '" + treeNode.name + "' 吗?", function(){
         ret = true;
-    }, function(){
-        ret = false;
     });
     return ret;
 }
 function onRemove(e, treeId, treeNode) {
-    var ret;
-    var cfm = layer.confirm("确定删除节点 '" + treeNode.name + "' 吗?", function(){
+    var ret = false;
+    eModal.confirm("确定删除节点 '" + treeNode.name + "' 吗?", function(){
         ret = true;
-    }, function(){
-        ret = false;
     });
     return ret;
 }
 function beforeRename(treeId, treeNode, newName) {
     if (newName.length == 0) {
         //alert("Node name can not be empty.");
-        layer.alert('Node name can not be empty.');
+        eModal.alert('Node name can not be empty.');
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
         setTimeout(function(){zTree.editName(treeNode)}, 10);
         return false;
@@ -198,11 +239,12 @@ function edit() {
         nodes = zTree.getSelectedNodes(),
         treeNode = nodes[0];
     if (nodes.length == 0) {
-        layer.alert("请先选择一个编辑节点...");
+        eModal.alert("请先选择一个编辑节点...");
 
         return;
     }
     zTree.editName(treeNode);
+    console.log("jfjrewj");
 }
 
 
@@ -222,17 +264,15 @@ function remove(e) {
         nodes = zTree.getSelectedNodes(),
         treeNode = nodes[0];
     if (nodes.length == 0) {
-        layer.alert("请先选择一个节点...");
+        eModal.alert("请先选择一个节点...");
         return;
     }
-    var cfm = layer.confirm("确定删除节点 '" + treeNode.name + "' 吗?", function(){
-        layer.close(cfm);
+    eModal.confirm("确定324删除节点 '" + treeNode.name + "' 吗?", function(){
         var callbackFlag = $("#callbackTrigger").attr("checked");
         zTree.removeNode(treeNode, callbackFlag);
     }, function(){});
 
 }
-
 
 
 var curProgramNode = null, zTree_Menu = null;
@@ -251,14 +291,20 @@ var setting = {
     view: {
         showLine: false,
         selectedMulti: false,
-        dblClickExpand: true,
+        dblClickExpand: false,
+        showTitle: true,
         addDiyDom: addDiyDom
     },
     data: {
         simpleData: {
             enable: true
+        },
+        key: {
+            title: "description"
         }
+
     },
+    remark:"remark",
     callback: {
         beforeClick: beforeClick,
         beforeDrag: beforeDrag,
@@ -268,25 +314,33 @@ var setting = {
         onDrop: onDrop,
         beforeRemove: beforeRemove,
         beforeRename: beforeRename,
-        onRemove: onRemove
+        onRemove: onRemove,
+        onClick: onClick
     }
 };
 
+
+function onClick(e,treeId, treeNode) {
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+    zTree.expandNode(treeNode);
+    console.log("jsjj")
+}
+
+
 var zNodes =[
-    { id:1, pId:0, name:"我的程序", open:true, iconOpen:"images/yiji.png", iconClose:"images/yijiclose.png"},
-    { id:11, pId:1, name:"常用程序"},
-    { id:12, pId:1, name:"不用程序"},
-    { id:121, pId:12, name:"YYY用程序"},
-    { id:13, pId:1, name:"你用程序"},
-    { id:131, pId:13, name:"A用程序"},
-    { id:111, pId:11, name:"Shared file"},
-    { id:112, pId:11, name:"Executable file"},
-    { id:113, pId:11, name:"Portable object files"},
-    { id:113, pId:11, name:"Aortable object files"},
-    { id:2, pId:0, name:"王小明01的程序", iconOpen:"images/yiji.png", iconClose:"images/yijiclose.png"},
-    { id:3, pId:0, name:"张明04的程序", iconOpen:"images/yiji.png", iconClose:"images/yijiclose.png"},
-    { id:4, pId:0, name:"李明明的程序", iconOpen:"images/yiji.png", iconClose:"images/yijiclose.png"},
-    { id:5, pId:0, name:"赵大明01的程序", iconOpen:"images/yiji.png", iconClose:"images/yijiclose.png"}
+    { id:1, pId:0, name:"我的程序", open:true, description: "jdskagt54y465y64ryhjfkjfi"},
+    { id:11, pId:1, name:"常用程序", open:true, description: "j6t56dskajfkjfi"},
+    { id:111, pId:11, name:"Portable file", open:true, description: "jdskaj646fkjfi"},
+    { id:112, pId:11, name:"Executable file", open:true, description: "jdskajfkjfi"},
+    { id:113, pId:11, name:"Shared object files", description: "635654376"},
+    { id:2, pId:0, name:"共享程序", open:true, description: "jr43wdskajfkjfi"},
+    { id:21, pId:2, name:"张明04的程序", description: "cxsfre"},
+    { id:211, pId:21, name:"常用",  description: "路明年给你给你"},
+    { id:2111, pId:211, name:"计算圆周率",  description: "计算圆周率是啥子鬼"},
+    { id:2112, pId:211, name:"勾股定理", description: "勾股定理是结果"},
+    { id:212, pId:21, name:"不常用程序",  description: "cxsfre"},
+    { id:22, pId:2, name:"李明明的程序",  description: "r43w"},
+    { id:23, pId:2, name:"赵大明01的程序", description: "yt5ry6"}
 ];
 
 function focusOn(treeId, treeNode){
@@ -301,7 +355,6 @@ function add() {
         treeNode = nodes[0],
         parTreeNode = treeNode.getParentNode();
 
-    console.log(treeNode.level);
 
     /*在这里检测如果不可编辑，则不执行*/
     var ret = isTabNotAllowed($("#add"));
@@ -311,7 +364,8 @@ function add() {
     }
 
 
-    var level = treeNode.level;
+    var level = getCurLevel(treeNode);
+    //var level = treeNode.level;
 
     if (treeNode) {
         var pid2 = treeNode.id;
@@ -321,13 +375,12 @@ function add() {
             /*ok*/
             treeNode = zTree.addNodes(treeNode, {id:(pid2 + newCount), pId: pid2, isParent:false, name:"程序文件" + (newCount++)});
         } else if(level == 2){
-            /*第3层，添加第三层文件*/
+            /*not ok,加在了子级别*/
             treeNode = zTree.addNodes(parTreeNode, {id:(pid3 + newCount), pId:pid3, isParent:false, name:"程序文件" + (newCount++)});
         } else {
             /*ok*/
-            /*第1层，添加第2层文件夹*/
             treeNode = zTree.addNodes(treeNode, {id:(pid2 + newCount), pId:pid2, isParent:true, name:"新建文件夹" + (newCount++)});
-            $("#"+treeNode.tId).children("a").append("<i class='btn-sort sheng'>");
+            $("#"+treeNode[0].tId).children("a").append("<i class='btn-sort sheng'>");
         }
 
     }
@@ -335,7 +388,7 @@ function add() {
         zTree.editName(treeNode[0]);
     } else {
         //alert("Leaf node is locked and can not add child node.");
-        layer.alert('Leaf node is locked and can not add child node.');
+        eModal.alert('Leaf node is locked and can not add child node.');
     }
 }
 
@@ -351,40 +404,35 @@ $(function(){
     $("#add").bind("click", add);
 
 
-    /*初始化时进行加载排序图标*/
+
+    /*当有新节点生成时需要调用这个方法进行加载排序图标*/
     setSortIcon();
 
-
     /*点击排序时*/
+    /*点击排序时*/
+    //$(".ztree, .ztree").on("click", "li.level0>a .btn-sort, li.level0>a  .btn-sort", function(){
+    /*遇到问题是，新加节点绑定事件消失*/
     $(".ztree").on("click", ".btn-sort", function(){
         var $this = $(this);
         sortNodes($this);
     })
 
-
 });
 
 
-function initRoot(){
-    var zSTNodes = [
-        { id:1, pId:0, name:"Documents"},
-        { id:2, pId:0, name:"Photos"},
-        { id:3, pId:0, name:"DDDDD"}
-    ];
-    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-
-    for(var i = 0; i < zSTNodes.length; i++){
-        zTree.addNodes(zTree, {id:(i + 1), pId:0, isParent:true, name:"新建文件夹" + (i++)});
-    }
-
-}
-
 
 function setSortIcon(){
-    if(!$(".ztree li.level0>a>i, .ztree li.level1>a>i").hasClass("btn-sort")){
-        $(".ztree li.level0>a, .ztree li.level1>a").append("<i class='btn-sort sheng'>");
+    if(!$(".ztree li.level0>a>i").hasClass("btn-sort")){
+        $(".ztree li.level0>a").append("<i class='btn-sort sheng'>");
     }
+    if(!$(".ztree li.level1>a>i").hasClass("btn-sort")){
+        $(".ztree li.level1>a").append("<i class='btn-sort sheng'>");
+    }
+    /*if($(".ztree li.level3").length && !$(".ztree li.level2>a>i").hasClass("btn-sort") && $(".ztree li.level2").closest("level0")){
+     $(".ztree li.level2>a").append("<i class='btn-sort sheng'>");
+     }*/
 }
+
 
 
 function sortNodes($this){
@@ -435,3 +483,4 @@ function sortNodes($this){
     eventUtil.preventDefault(event);
     eventUtil.stopPropagation(event);
 }
+
