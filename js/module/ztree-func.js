@@ -134,31 +134,6 @@ function beforeClick(treeId, treeNode) {
             }
         }
     }
-
-    /*点击第三层文件时*/
-    if (curLevel == 2 ) {
-        $(".editor_ask").hide();
-        $("#editor").show();
-        /*如何检测内容发生了变化*/
-        var curtEXT = editor.getValue();
-        if(changeFlag){
-            //询问框
-            eModal.confirm('是否需要保存文件？', function(){
-                /*进行保存， 成功或者失败提示*/
-                //结果提示信息框
-                editor.setValue("提示：请在“我的程序”里选");
-            });
-
-            changeFlag = false;
-        }
-
-        curProgramNode = treeNode.id;
-
-    } else{
-        $(".editor_ask").show();
-        $("#editor").hide();
-    }
-
     return true;
 }
 
@@ -227,14 +202,6 @@ function beforeRename(treeId, treeNode, newName) {
 
 
 function edit() {
-
-    /*在这里检测如果不可编辑，则不执行*/
-    var ret = isTabNotAllowed($("#add"));
-    if(ret){
-        eventUtil.preventDefault(event);
-        return false;
-    }
-
     var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
         nodes = zTree.getSelectedNodes(),
         treeNode = nodes[0];
@@ -249,17 +216,6 @@ function edit() {
 
 
 function remove(e) {
-    /*在这里检测如果不可编辑，则不执行*/
-    var ret = isTabNotAllowed($("#add"));
-    if(ret){
-        editor.setValue(null);
-        //curProgramNode = null;
-        eventUtil.preventDefault(event);
-        return false;
-    }
-
-
-
     var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
         nodes = zTree.getSelectedNodes(),
         treeNode = nodes[0];
@@ -355,17 +311,7 @@ function add() {
         treeNode = nodes[0],
         parTreeNode = treeNode.getParentNode();
 
-
-    /*在这里检测如果不可编辑，则不执行*/
-    var ret = isTabNotAllowed($("#add"));
-    if(ret){
-        eventUtil.preventDefault(event);
-        return false;
-    }
-
-
     var level = getCurLevel(treeNode);
-    //var level = treeNode.level;
 
     if (treeNode) {
         var pid2 = treeNode.id;
@@ -402,6 +348,18 @@ $(function(){
     $("#edit").bind("click", edit);
     $("#remove").bind("click", remove);
     $("#add").bind("click", add);
+    /*点击备注*/
+    $("#desc").bind("click", showDesc);
+
+
+    /*点击关闭备注弹出框*/
+    $("#pop_beizhu .close").click(function(){
+        $("#pop_beizhu").hide();
+    })
+    $("#pop_beizhu .popup-mask").click(function(){
+        $("#pop_beizhu").hide();
+        event.stopPropagation();
+    })
 
 
 
@@ -410,8 +368,6 @@ $(function(){
 
     /*点击排序时*/
     /*点击排序时*/
-    //$(".ztree, .ztree").on("click", "li.level0>a .btn-sort, li.level0>a  .btn-sort", function(){
-    /*遇到问题是，新加节点绑定事件消失*/
     $(".ztree").on("click", ".btn-sort", function(){
         var $this = $(this);
         sortNodes($this);
@@ -428,9 +384,6 @@ function setSortIcon(){
     if(!$(".ztree li.level1>a>i").hasClass("btn-sort")){
         $(".ztree li.level1>a").append("<i class='btn-sort sheng'>");
     }
-    /*if($(".ztree li.level3").length && !$(".ztree li.level2>a>i").hasClass("btn-sort") && $(".ztree li.level2").closest("level0")){
-     $(".ztree li.level2>a").append("<i class='btn-sort sheng'>");
-     }*/
 }
 
 
@@ -484,3 +437,50 @@ function sortNodes($this){
     eventUtil.stopPropagation(event);
 }
 
+
+
+/*弹出备注弹框*/
+function showDesc(){
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+        nodes = zTree.getSelectedNodes(),
+        treeNode = nodes[0];
+
+    $("#pop_beizhu .popup-title").html(treeNode.name);
+    var description = getDesc();
+    $("#pop_beizhu textarea").val(description);
+
+    $("#pop_beizhu").show();
+
+    $("#save").unbind("click");
+
+    /*判断选中节点是文件夹还是文件，走不同方法*/
+    var fn = function(){
+        alert("lll")
+    };
+
+    $("#save").bind("click", function(){
+        fn();
+        saveDesc();
+        $("#pop_beizhu").hide();
+    })
+}
+
+/*保存备注*/
+function saveDesc(){
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+        nodes = zTree.getSelectedNodes(),
+        treeNode = nodes[0];
+
+    var description = $("#pop_beizhu textarea").val();
+    treeNode.description = description;
+    zTree.updateNode(treeNode);
+    //$("#" + treeNode.tId).children("a").attr("title", description);
+}
+
+/*获取选中节点的title*/
+function getDesc(){
+    var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+        nodes = zTree.getSelectedNodes(),
+        treeNode = nodes[0];
+    return treeNode.description;
+}
