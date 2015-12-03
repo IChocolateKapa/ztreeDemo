@@ -116,11 +116,17 @@ var AuthManager =  {
             var first_order = fir_sec_orders[i].first_order.value,
                 first_order_text = fir_sec_orders[i].first_order.text;
 
-            zNodes.push()
+            var checked = true;//????如何取得checked属性，需要与传入data做对比，
+
+            zNodes.push({ id: i+1, pId: 0, name: first_order_text, checked: checked, open:true, description: first_order});
 
             var second_orders = fir_sec_orders[i].second_order;
             for (var j = 0; j < second_orders.length; j++) {
 
+                var second_order = second_orders[j].value,
+                    second_order_text = second_orders[j].text;
+
+                //zNodes.push({ id: (j+1)., pId: i+1, name: second_order_text, checked: checked, open:true, description: second_order});
             }
 
         }
