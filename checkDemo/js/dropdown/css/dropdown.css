@@ -1,0 +1,15 @@
+/*下拉框样式*/
+.fm_select{height: 33px;line-height:33px;border-radius: 5px;box-sizing: border-box;-moz-box-sizing: border-box;width: 100%;border: 1px solid #EBEBEB;background-color: #fff;}
+.fm_select>span{display: inline-block;box-sizing: inherit;width: 100%;height: 30px;line-height: 30px;padding-left: 10px;}
+.fm_select>span>em{float: right;width: 28px;height: 28px;background: #fff url(../img/ct_icon.png) no-repeat;}
+.fm_select>span>em.drop_down_img{background-position: 0 -640px;}
+.fm_select>span>em.refresh_img{background-position: 0 -885px;cursor: pointer;}
+.oSbox{box-sizing: inherit;border: 1px solid #EBEBEB;border-radius: 5px;width: 515px;display: block;position: absolute;background: #fff;z-index: 100;max-height: 250px;overflow-y: auto;margin-top: -1px;padding:8px 0;display:none;}
+.oSbox>li{margin:0 10px;padding:0 10px 0 15px;}
+.oSbox>li:hover{background-color:#BCDDF1;}
+.oSbox .slt_srch_box{box-sizing: inherit;margin:0 10px 10px;}
+.oSbox .slt_srch_ipt{box-sizing: inherit;height: 27px;border-radius: 5px;display: block;padding: 0 10px 0 15px;width: 100%;}
+.oSbox .slt_srch_box>em{display: inline-block;width: 25px;height: 25px;float: right;background: url(../img/ct_icon.png) 0 -707px no-repeat;margin: -26px 2px 0 0;}
+.fm_select.readonly{background-color: #E9E9E9;}
+.fm_select.readonly>span>em{background-color: #E9E9E9;cursor:default;}
+.fm_select.readonly>span>em.drop_down_img{background-position: 0 -1049px;}
