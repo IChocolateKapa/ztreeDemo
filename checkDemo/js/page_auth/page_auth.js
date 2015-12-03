@@ -23,6 +23,9 @@ var setting = {
     data: {
         simpleData: {
             enable: true
+        },
+        key: {
+            title: "description"
         }
     },
     callback: {
@@ -42,35 +45,19 @@ var zNodes =[
     { id:11, pId:1, name:"a_4_site_data(4网经纪人数据分析)", checked: false, open:true},
     { id:2, pId:0, name:"bi", checked: false, open:true},
     { id:21, pId:2, name:"bi-You", checked: false},
-    { id:211, pId:21, name:"a_4_site_data(4网经纪人数据分析)",  checked: false},
-    { id:212, pId:21, name:"a_4_site_data(4网经纪人数据分析)",  checked: false},
     { id:22, pId:2, name:"a_4_site_data(4网经纪人数据分析)",  checked: false},
     { id:23, pId:2, name:"a_4_site_data(4网经纪人数据分析)", checked: false}
 ];
 
+function initZNodes (plat_name, biz_name) {
+
+}
+
 
 
 $(function(){
-    /*仓库搜索 选择下拉框*/
-    var selectDatasetType = new DropdownBox({
-        parent: $('#selectDatasetType'),
-        localData : [{value:'Mysql', label:'mysql'},{value:'Hive', label:'Hive'}],
-        refreshShowable : false,
-        searchShowable : false,
-        onChangeFunc : function () {
-            /*获取label*/
-            var curValue = $('.show_label').text().trim();
-            /*获取value*/
-            /*测试*/
-            $(".authTree").removeClass("dead");
-            var treeObj = $("#treeDemo");
-            $.fn.zTree.init(treeObj, setting, zNodes);
-            /*下面三行代码是初始时选中第一个节点*/
-            //var zTree_Menu = $.fn.zTree.getZTreeObj("treeDemo");
-            //var curProgramNode = zTree_Menu.getNodes()[0];
-            //zTree_Menu.selectNode(curProgramNode);
-        }
-    });
+
+    AuthManager.initBizNamesDropdown($('#selectDatasetType'), "58");
 });
 
 
