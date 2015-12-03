@@ -3,6 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        ul li{
+            border: 1px solid green;
+            min-height: 60px;
+            height: auto;
+            display: table;
+        }
+        ul li span{
+            display: table-cell;
+            vertical-align: middle;
+            border: 1px solid red;
+            width: 120px;
+            height: auto;
+        }
+
+        ul li span a{
+            text-decoration: none;
+            color:#333;
+            line-height: 30px;
+            font-size: 13px;
+            font-weight: normal;
+            height: 100%;
+            white-space: normal;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            cursor: default;
+        }
+    </style>
 </head>
 <body>
 <script type="text/javascript">
@@ -30,5 +63,53 @@
 
 <p>汉字拼音顺序排序结果：<br />
     <textarea id="r2" style="width: 100%; overflow: scroll; word-wrap: normal;" rows="10"></textarea></p>
+
+
+
+<ul>
+    <li>
+        <span>
+            <a href="#">张韶涵,b土,abort,张学友,something,苹果,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,b土,abort,张学友,something,苹果,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,</a>
+        </span>
+    </li>
+    <li>
+        <span>
+            <a href="#">张韶涵,b土,abort,张学友,something,苹果,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,b土,abort,张学友,something,苹果,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,</a>
+        </span>
+    </li>
+    <li>
+        <span>
+            <a href="#">张韶涵,b土,abort,张学友,something,苹果,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,b土,abort,张学友,something,苹果,</a>
+        </span>
+        <span>
+            <a href="#">张韶涵,</a>
+        </span>
+    </li>
+</ul>
+
 </body>
 </html>
