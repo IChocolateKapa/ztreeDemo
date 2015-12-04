@@ -57,7 +57,43 @@ function initZNodes (plat_name, biz_name) {
 
 $(function(){
 
-    AuthManager.initBizNamesDropdown($('#selectDatasetType'), "58");
+    var vpnameData = AuthManager.handleLocalData(ADMIN_LIST);
+    AuthManager.initDropdown($('#selectVPName'), vpnameData, function () {
+        /*获取选中业务线值*/
+        var admin = this.value();
+    });
+
+    var biz_names = PLAT_BIZ_NAMES["58"];
+    var localData = AuthManager.handleLocalData(biz_names);
+    AuthManager.initDropdown($('#selectDatasetType'), localData, function () {
+        /*获取选中业务线值*/
+        var biz_name = this.value();
+        /*
+         * 发送请求，获取该plat_name和biz_name之下的权限信息
+         * */
+        //$.ajax({});
+        var authOwnedList = [
+            {
+                first_order: "page_detail",
+                second_order: "pvuv"
+            },
+            {
+                "first_order": "visitview",
+                "second_order": "visit_time"
+            },
+            {
+                "first_order": "visitview",
+                "second_order": "visit_depth"
+            }
+        ];
+
+        var zNodes = AuthManager.initZNodesList('58', biz_name, authOwnedList);
+
+        $(".authTree").removeClass("dead");
+        var treeObj = $("#treeDemo");
+        $.fn.zTree.init(treeObj, setting, zNodes);
+    });
+
 });
 
 

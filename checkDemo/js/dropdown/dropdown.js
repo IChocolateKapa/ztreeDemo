@@ -38,6 +38,10 @@ if(typeof DropdownBox=="undefined" || !DropdownBox){
 				});
 			}
 			$.each(self.options.localData, function(i, data){
+				if(data.selected){
+					$(".show_label").html(data.label);
+					$(".hidden_val").val(data.value);
+				}
 				self.options.parent.find('.oSbox').append('<li data-value="'+data.value+'">'+data.label+'</li>');
 			});
 			

@@ -75,8 +75,16 @@
     <div style="padding: 5px; margin: 0 auto; font-family: 'Microsoft Yahei'">
         <ul class="authUl">
             <li>
-                <span class="liTitle"><span class="li1">角色名称</span>&nbsp;<i class="required">*</i></span>&nbsp;&nbsp;
-                <input type="text" placeholder="数据导出" class="liText" readonly/>
+                <span class="liTitle"><span class="li1">用户名称</span>&nbsp;<i class="required">*</i></span>&nbsp;&nbsp;
+                <input type="text" placeholder="要为谁新增权限" class="liText"/>
+            </li>
+
+            <li>
+                <span class="liTitle"><span class="li1">VPName</span>&nbsp;<i class="required">*</i></span>&nbsp;&nbsp;
+                <!--请选择下拉框-->
+                <div class="auth_xiala">
+                    <div class="fm_select validate"  data-roletype="request" data-poptitle="请选择" id="selectVPName"></div>
+                </div>
             </li>
 
             <li>
@@ -96,6 +104,7 @@
             </li>
         </ul>
     </div>
+
 
 </body>
 </html>

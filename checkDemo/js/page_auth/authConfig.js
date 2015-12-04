@@ -7,7 +7,8 @@
 var ADMIN_LIST = [
     {
         'value': 'gengxiuyu',
-        'text': '耿秀玉'
+        'text': '耿秀玉',
+        'selected': true
     },
     {
         'value': 'liushaohua',
@@ -322,12 +323,16 @@ var FIRST_SECOND_ORDERS_58 = {
                     'text': 'crm2.5'
                 },
                 {
+                    'value': 'sys_crm3',
+                    'text': 'crm3.0'
+                },
+                {
                     'value': 'sys_mis',
                     'text': '美事'
                 },
                 {
                     'value': 'sys_orders',
-                    'text': '订单系统'
+                    'text': '支付系统'
                 },
                 {
                     'value': 'sys_call',
