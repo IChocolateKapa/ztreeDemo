@@ -49,50 +49,56 @@ var zNodes =[
     { id:23, pId:2, name:"a_4_site_data(4网经纪人数据分析)", checked: false}
 ];
 
-function initZNodes (plat_name, biz_name) {
-
-}
-
 
 
 $(function(){
 
     var vpnameData = AuthManager.handleLocalData(ADMIN_LIST);
     AuthManager.initDropdown($('#selectVPName'), vpnameData, function () {
-        /*获取选中业务线值*/
         var admin = this.value();
+        console.log(admin);
     });
 
-    var biz_names = PLAT_BIZ_NAMES["58"];
-    var localData = AuthManager.handleLocalData(biz_names);
-    AuthManager.initDropdown($('#selectDatasetType'), localData, function () {
-        /*获取选中业务线值*/
-        var biz_name = this.value();
-        /*
-         * 发送请求，获取该plat_name和biz_name之下的权限信息
-         * */
-        //$.ajax({});
-        var authOwnedList = [
-            {
-                first_order: "page_detail",
-                second_order: "pvuv"
-            },
-            {
-                "first_order": "visitview",
-                "second_order": "visit_time"
-            },
-            {
-                "first_order": "visitview",
-                "second_order": "visit_depth"
-            }
-        ];
 
-        var zNodes = AuthManager.initZNodesList('58', biz_name, authOwnedList);
 
-        $(".authTree").removeClass("dead");
-        var treeObj = $("#treeDemo");
-        $.fn.zTree.init(treeObj, setting, zNodes);
-    });
+    $(":radio[name='plat_name']").change(function () {
+
+
+        var plat_name = $(this).attr("id");
+
+        var biz_names = PLAT_BIZ_NAMES[plat_name];
+        var localData = AuthManager.handleLocalData(biz_names);
+        AuthManager.initDropdown($('#selectDatasetType'), localData, function () {
+            /*获取选中业务线值*/
+            var biz_name = this.value();
+            /*
+             * 发送请求，获取该plat_name和biz_name之下的权限信息
+             * */
+            //$.ajax({});
+            var authOwnedList = [
+                {
+                    first_order: "page_detail",
+                    second_order: "pvuv"
+                },
+                {
+                    "first_order": "visitview",
+                    "second_order": "visit_time"
+                },
+                {
+                    "first_order": "visitview",
+                    "second_order": "visit_depth"
+                }
+            ];
+
+            var zNodes = AuthManager.initZNodesList(plat_name, biz_name, authOwnedList);
+
+            $(".authTree").removeClass("dead");
+            var treeObj = $("#treeDemo");
+            $.fn.zTree.init(treeObj, setting, zNodes);
+        });
+
+
+    })
 
 });
 

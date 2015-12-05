@@ -120,7 +120,7 @@ var AuthManager =  {
             var checked1 = true;//????如何取得checked属性，需要与传入data做对比，
 
             var firstID = i + 1;
-            zNodes.push({ id: firstID, pId: 0, name: first_order_text, checked: checked1, open:true, description: first_order});
+            zNodes.push({ id: firstID, pId: 0, name: first_order_text, checked: checked1,open:true, description: first_order});
 
             var second_orders = fir_sec_orders[i].second_order;
             for (var j = 0; j < second_orders.length; j++) {
@@ -129,7 +129,7 @@ var AuthManager =  {
                     second_order_text = second_orders[j].text,
                     secondID = firstID * 10 + j + 1;
 
-                var checked2 = true;
+                var checked2 = (j%2 == 0)? true: false;
 
                 zNodes.push({ id: secondID, pId: firstID, name: second_order_text, checked: checked2, /*open:true,*/ description: second_order});
             }
