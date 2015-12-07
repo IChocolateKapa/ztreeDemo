@@ -11,7 +11,7 @@ var setting = {
     },
     edit: {
         enable: true,
-        showRemoveBtn: false,
+        showRemoveBtn: true,
         showRenameBtn: false
     },
     view: {
@@ -33,7 +33,6 @@ var setting = {
     }
 };
 
-
 function onClick(e,treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     zTree.expandNode(treeNode);
@@ -50,22 +49,22 @@ function callBackInitZNodes (plat_name) {
          * 发送请求，获取该plat_name和biz_name之下的权限信息
          * */
         //$.ajax({});
-        var authOwnedList = [
-            {
-                first_order: "page_detail",
-                second_order: "pvuv"
-            },
-            {
-                "first_order": "visitview",
-                "second_order": "visit_time"
-            },
-            {
-                "first_order": "visitview",
-                "second_order": "visit_depth"
-            }
-        ];
+        /*var authOwnedList = [
+         {
+         first_order: "page_detail",
+         second_order: "pvuv"
+         },
+         {
+         "first_order": "visitview",
+         "second_order": "visit_time"
+         },
+         {
+         "first_order": "visitview",
+         "second_order": "visit_depth"
+         }
+         ];*/
 
-        var zNodes = AuthManager.initZNodesList(plat_name, biz_name, authOwnedList);
+        var zNodes = AuthManager.initZNodesList(plat_name, biz_name);
 
         $(".authTree").removeClass("dead");
         var treeObj = $("#treeDemo");

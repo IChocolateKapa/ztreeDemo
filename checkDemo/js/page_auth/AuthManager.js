@@ -17,46 +17,7 @@ var AuthManager =  {
      *
      * */
     initAdmins: function () {
-        var selectVPName = new DropdownBox({
-            parent: $obj,
-            localData : localData,
-            refreshShowable : false,
-            searchShowable : false,
-            onChangeFunc : function () {
-                /*获取选中业务线值*/
-                var biz_name = this.value();
 
-                /*
-                 * 发送请求，获取该plat_name和biz_name之下的权限信息
-                 * */
-                //$.ajax({});
-                var authOwnedList = [
-                    {
-                        first_order: "page_detail",
-                        second_order: "pvuv"
-                    },
-                    {
-                        "first_order": "visitview",
-                        "second_order": "visit_time"
-                    },
-                    {
-                        "first_order": "visitview",
-                        "second_order": "visit_depth"
-                    }
-                ];
-
-                var zNodes = self.initZNodesList(plat_name, biz_name, authOwnedList);
-
-
-                $(".authTree").removeClass("dead");
-                var treeObj = $("#treeDemo");
-                $.fn.zTree.init(treeObj, setting, zNodes);
-                /*下面三行代码是初始时选中第一个节点*/
-                //var zTree_Menu = $.fn.zTree.getZTreeObj("treeDemo");
-                //var curProgramNode = zTree_Menu.getNodes()[0];
-                //zTree_Menu.selectNode(curProgramNode);
-            }
-        });
     },
 
     /**
