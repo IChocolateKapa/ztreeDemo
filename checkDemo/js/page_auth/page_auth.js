@@ -39,16 +39,39 @@ function onClick(e,treeId, treeNode) {
     zTree.expandNode(treeNode);
 }
 
+function callBackInitZNodes (plat_name) {
+    var biz_names = PLAT_BIZ_NAMES[plat_name];
+    var localData = AuthManager.handleLocalData(biz_names);
+    AuthManager.initDropdown($('#selectDatasetType'), localData, function () {
+        /*获取选中业务线值*/
+        var biz_name = this.value();
+        /*
+         * 发送请求，获取该plat_name和biz_name之下的权限信息
+         * */
+        //$.ajax({});
+        var authOwnedList = [
+            {
+                first_order: "page_detail",
+                second_order: "pvuv"
+            },
+            {
+                "first_order": "visitview",
+                "second_order": "visit_time"
+            },
+            {
+                "first_order": "visitview",
+                "second_order": "visit_depth"
+            }
+        ];
 
-var zNodes =[
-    { id:1, pId:0, name:"app", checked: false, open:true},
-    { id:11, pId:1, name:"a_4_site_data(4网经纪人数据分析)", checked: false, open:true},
-    { id:2, pId:0, name:"bi", checked: false, open:true},
-    { id:21, pId:2, name:"bi-You", checked: false},
-    { id:22, pId:2, name:"a_4_site_data(4网经纪人数据分析)",  checked: false},
-    { id:23, pId:2, name:"a_4_site_data(4网经纪人数据分析)", checked: false}
-];
+        var zNodes = AuthManager.initZNodesList(plat_name, biz_name, authOwnedList);
 
+        $(".authTree").removeClass("dead");
+        var treeObj = $("#treeDemo");
+        $.fn.zTree.init(treeObj, setting, zNodes);
+    });
+
+}
 
 
 $(function(){
@@ -59,44 +82,15 @@ $(function(){
         console.log(admin);
     });
 
+    callBackInitZNodes("58");
 
 
-    $(":radio[name='plat_name']").change(function () {
+    $(".query_plat_name a").click(function () {
+        $(".query_plat_name a").removeClass("curr");
+        $(this).addClass("curr");
+        var plat_name = $(this).attr("data-val");
 
-
-        var plat_name = $(this).attr("id");
-
-        var biz_names = PLAT_BIZ_NAMES[plat_name];
-        var localData = AuthManager.handleLocalData(biz_names);
-        AuthManager.initDropdown($('#selectDatasetType'), localData, function () {
-            /*获取选中业务线值*/
-            var biz_name = this.value();
-            /*
-             * 发送请求，获取该plat_name和biz_name之下的权限信息
-             * */
-            //$.ajax({});
-            var authOwnedList = [
-                {
-                    first_order: "page_detail",
-                    second_order: "pvuv"
-                },
-                {
-                    "first_order": "visitview",
-                    "second_order": "visit_time"
-                },
-                {
-                    "first_order": "visitview",
-                    "second_order": "visit_depth"
-                }
-            ];
-
-            var zNodes = AuthManager.initZNodesList(plat_name, biz_name, authOwnedList);
-
-            $(".authTree").removeClass("dead");
-            var treeObj = $("#treeDemo");
-            $.fn.zTree.init(treeObj, setting, zNodes);
-        });
-
+        callBackInitZNodes(plat_name);
 
     })
 

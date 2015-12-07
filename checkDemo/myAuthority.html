@@ -10,12 +10,10 @@
     <script>
         function test(){
 
-            $("#myAuthFrame").load("authBody.html");
-
-
-            setTimeout(function(){
+            var a = $("#myAuthFrame").load("authBody.html", function (data, status) {
+                $("#myAuthFrame").empty();
                 eModal.modalDialog(
-                        $("#myAuthFrame").html(),
+                        data,
                         function(){
                             /*在这个函数中进行左边标签的修改*/
                         },
@@ -24,13 +22,13 @@
                             var zTree_Menu = $.fn.zTree.getZTreeObj("treeDemo");
                             var checkedNodes = zTree_Menu.getCheckedNodes(true);
                             console.log(checkedNodes)
-
                         },
                         function(){
                             alert("取消, 这个函数写取消事件");
                         }
                 )
-            }, 500);
+            });
+
 
         }
     </script>

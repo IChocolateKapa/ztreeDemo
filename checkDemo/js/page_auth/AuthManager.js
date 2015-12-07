@@ -117,7 +117,7 @@ var AuthManager =  {
             var first_order = fir_sec_orders[i].first_order.value,
                 first_order_text = fir_sec_orders[i].first_order.text;
 
-            var checked1 = true;//????如何取得checked属性，需要与传入data做对比，
+            var checked1 = true;//????如何取得checked属性，需要与传入data做对比,先不做这个功能，一步一步么
 
             var firstID = i + 1;
             zNodes.push({ id: firstID, pId: 0, name: first_order_text, checked: checked1,open:true, description: first_order});
