@@ -162,7 +162,7 @@ var eModal = {
             cancleTitle: "取消"
         };
 
-        $.extend(this.cfg, cfg);
+        $.extend(true, this.cfg, cfg);
 
 
         var ifShade = this.cfg.shade;
@@ -307,6 +307,14 @@ var eModal = {
         var sureTitle = this.cfg.sureTitle;
         var cancleTitle = this.cfg.cancleTitle;
 
+        var newBtn = this.cfg.newBtn.show;
+
+        if (newBtn) {
+            var myNew = "<a href='javascript:void(0)' id='hp-modal-btn-del'>" + this.cfg.newBtn.title + "</a>";
+        } else {
+            var myNew = "";
+        }
+
         //var title = "信息";
         var ss = "<div class=\"hp-modal\">"
                 + "<div class=\"hp-modal-title\">"
@@ -317,6 +325,7 @@ var eModal = {
                     + msg
                 + "</div>"
                 + "<div class='btn-group'>"
+                    + myNew
                     + "<a href='javascript:void(0)' id='hp-modal-btn-sure'>" + sureTitle + "</a>"
                     + "<a href='javascript:void(0)' id='hp-modal-btn-no'>" + cancleTitle + "</a>"
                 + "</div>"
@@ -414,7 +423,15 @@ var eModal = {
             } else {
                 $(".hp-modal").remove();
             }
-        })
+        });
+
+
+        if (newBtn) {
+            var myBtn = this.cfg.newBtn;
+            $("#hp-modal-btn-del").click(function () {
+                myBtn.clickFunc();
+            })
+        }
 
 
 

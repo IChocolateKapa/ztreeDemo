@@ -128,3 +128,11 @@ body{
     background: #3284a7;
     color: white;
 }
+#hp-modal-btn-del{
+    background: #ba090f;
+    color: white;
+    font-weight: bold;
+}
+#hp-modal-btn-del:hover{
+    background: #c60c06;
+}
