@@ -45,6 +45,7 @@ function callBackInitZNodes (plat_name) {
     AuthManager.initDropdown($('#selectDatasetType'), localData, function () {
         /*获取选中业务线值*/
         var biz_name = this.value();
+        sessionStorage.biz_name = biz_name;
         /*
          * 发送请求，获取该plat_name和biz_name之下的权限信息
          * */
@@ -76,19 +77,23 @@ function callBackInitZNodes (plat_name) {
 
 $(function(){
 
+    sessionStorage.plat_name = "58";
+
     var vpnameData = AuthManager.handleLocalData(ADMIN_LIST);
     AuthManager.initDropdown($('#selectVPName'), vpnameData, function () {
-        var admin = this.value();
-        console.log(admin);
+        sessionStorage.vp_name = this.value();
     });
 
     callBackInitZNodes("58");
 
 
     $(".query_plat_name a").click(function () {
+
         $(".query_plat_name a").removeClass("curr");
         $(this).addClass("curr");
+
         var plat_name = $(this).attr("data-val");
+        sessionStorage.plat_name = plat_name;
 
         callBackInitZNodes(plat_name);
 

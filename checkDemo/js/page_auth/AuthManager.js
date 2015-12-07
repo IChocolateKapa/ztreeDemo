@@ -92,7 +92,10 @@ var AuthManager =  {
             };
 
 
-            if (biz_names[i].selected) node.selected = true;
+            if (biz_names[i].selected) {
+                sessionStorage.vp_name = biz_name;
+                node.selected = true;
+            }
 
             biz_local.push(node);
         }
@@ -162,16 +165,5 @@ var AuthManager =  {
 
         //与
 
-    },
-
-
-
-
-    /**
-     *
-     * */
-    addPerson: function () {
-
     }
-
 };

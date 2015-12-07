@@ -296,7 +296,8 @@ var eModal = {
             skin: "0",
             shade: true,
             sureTitle: "确定",
-            cancleTitle: "取消"
+            cancleTitle: "取消",
+            draggable: false,
         };
 
         $.extend(this.cfg, cfg);
@@ -338,18 +339,17 @@ var eModal = {
         //var topH = winH * 0.5 - 40 + "px";
         $(".hp-modal").css({
             width: this.cfg.width,
-            //"margin-left": "-" + this.cfg.width/2 + "px",
-            //"top": topH,
-            //"margin-top": "-" + eleH/2 + "px"
         });
 
-        var oDiv=document.getElementById('hp-title');
+
+
+       /* var oDiv=document.getElementById('hp-title');
 
         oDiv.onmousedown=function (ev)
         {
             document.onmousemove=function (ev)
             {
-                /*获取鼠标相对于浏览器的偏移*/
+                /!*获取鼠标相对于浏览器的偏移*!/
                 var posX = ev.pageX;
                 var posY = ev.pageY;
                 var titleH = $("#hp-title").height();
@@ -373,7 +373,7 @@ var eModal = {
             }
 
             return false;
-        };
+        };*/
 
 
         if(ifShade){
@@ -425,6 +425,17 @@ var eModal = {
                 $(".hp-modal").remove();
             }
         });
+
+
+        var ifDrag = this.cfg.draggable;
+        if (ifDrag) {
+            $('.hp-modal').draggable({draghandle: '#hp-title'});
+            //$('#hp-title').draggable();
+        } else {
+            $('#hp-title').css({"cursor": "default"});
+        }
+
+
 
         fn0();
     },
