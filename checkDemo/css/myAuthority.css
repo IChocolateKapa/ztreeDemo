@@ -15,6 +15,8 @@ ul{
     margin-bottom: 16px;
     text-align: center;
     height: 30px;
+    width: 100%;
+    position: relative;
 }
 .liTitle {
     line-height: 32px;
@@ -93,4 +95,31 @@ ul{
 .query_plat_name a:hover{
     background-color: #3284a7;
     color: #fff;
+}
+.query_box{
+    border: 1px solid #ebebeb;
+    width: calc(84% - 20px);
+    height: auto;
+    position: absolute;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    display: none;
+}
+.query_box a{
+    display: block;
+    width: 100%;
+    line-height: 35px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    text-align: left;
+    text-indent: 18px;
+    transition: all .1s linear 0s;
+}
+.query_box a:hover{
+    background: #3284a7;
+    color: white;
 }

@@ -74,9 +74,9 @@
                         function(){
 
                             method.user_name = $("#user_name").val();
-                            method.vp_name = sessionStorage.vp_name? sessionStorage.vp_name: "gengxiuyu";
-                            method.plat_name = sessionStorage.plat_name? sessionStorage.plat_name: "58";
-                            method.biz_name = sessionStorage.biz_name? sessionStorage.biz_name: "page_detail";
+                            method.vp_name = sessionStorage.vp_name_w? sessionStorage.vp_name_w: "gengxiuyu";
+                            method.plat_name = sessionStorage.plat_name_w? sessionStorage.plat_name_w: "58";
+                            method.biz_name = sessionStorage.biz_name_w? sessionStorage.biz_name_w: "page_detail";
 
                             var zTree_Menu = $.fn.zTree.getZTreeObj("treeDemo");
                             //提示用户没有选？
@@ -135,15 +135,15 @@
                                     if (!zTree_Menu) return;
                                     var checkedNodes = zTree_Menu.getCheckedNodes(true);
 
-                                    var confirmTip = confirm('确定删除该用户的所有权限'),
+                                    var confirmTip = confirm('确定删除该用户的权限'),
                                         method = {
                                             'operate': 'delete'
                                         };
 
                                     method.user_name = $("#user_name").val();
-                                    method.vp_name = sessionStorage.vp_name? sessionStorage.vp_name: "gengxiuyu";
-                                    method.plat_name = sessionStorage.plat_name? sessionStorage.plat_name: "58";
-                                    method.biz_name = sessionStorage.biz_name? sessionStorage.biz_name: "page_detail";
+                                    method.vp_name = sessionStorage.vp_name_w? sessionStorage.vp_name_w: "gengxiuyu";
+                                    method.plat_name = sessionStorage.plat_name_w? sessionStorage.plat_name_w: "58";
+                                    method.biz_name = sessionStorage.biz_name_w? sessionStorage.biz_name_w: "page_detail";
 
                                     for (var i = 0, len1 = checkedNodes.length; i < len1; i++) {
                                         var level = checkedNodes[i].level,

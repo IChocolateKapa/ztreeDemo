@@ -54,7 +54,7 @@ var AuthManager =  {
 
 
             if (biz_names[i].selected) {
-                sessionStorage.vp_name = biz_name;
+                sessionStorage.vp_name_w = biz_name;
                 node.selected = true;
             }
 
@@ -76,27 +76,53 @@ var AuthManager =  {
             fir_sec_orders = plat[type],
             zNodes = [];
 
+
+        /*var authOwnedList = [
+            {
+                first_order: "page_detail",
+                second_order: "pvuv"
+            },
+            {
+                "first_order": "visitview",
+                "second_order": "visit_time"
+            },
+            {
+                "first_order": "visitview",
+                "second_order": "visit_depth"
+            }
+        ];*/
+
+
+
         for (var i = 0; i < fir_sec_orders.length; i++) {
 
             var first_order = fir_sec_orders[i].first_order.value,
-                first_order_text = fir_sec_orders[i].first_order.text;
+                first_order_text = fir_sec_orders[i].first_order.text,
+                checked1 = false,
+                firstID = i + 1,
+                second_orders = fir_sec_orders[i].second_order,
+                count = 0;
 
-            var checked1 = true;//????如何取得checked属性，需要与传入data做对比,先不做这个功能，一步一步么
-
-            var firstID = i + 1;
-            zNodes.push({ id: firstID, pId: 0, name: first_order_text, checked: checked1,open:true, description: first_order});
-
-            var second_orders = fir_sec_orders[i].second_order;
             for (var j = 0; j < second_orders.length; j++) {
 
                 var second_order = second_orders[j].value,
                     second_order_text = second_orders[j].text,
-                    secondID = firstID * 10 + j + 1;
+                    secondID = firstID * 10 + j + 1,
+                    checked2 = false;
 
-                var checked2 = (j%2 == 0)? true: false;
-
+                for (var k = 0; k < data.length; k++) {
+                    if(data[k].first_order === first_order
+                        &&  data[k].second_order === second_order ) {
+                        checked2 = true;
+                        count++;
+                    }
+                }
                 zNodes.push({ id: secondID, pId: firstID, name: second_order_text, checked: checked2, /*open:true,*/ description: second_order});
             }
+
+            if (count === second_orders.length) checked1 = true;
+
+            zNodes.push({ id: firstID, pId: 0, name: first_order_text, checked: checked1,open:true, description: first_order});
 
         }
 
