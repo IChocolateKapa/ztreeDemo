@@ -13,7 +13,7 @@ if(typeof DropdownBox=="undefined" || !DropdownBox){
 			isSpecialDropData : false,
 			hiddenIptName : '',
 			readonly : false,
-			onChangeFunc : undefined,
+			onChangeFunc : undefined
 		};
 		$.extend(this.options, options);
 		this._init();
@@ -42,7 +42,7 @@ if(typeof DropdownBox=="undefined" || !DropdownBox){
 					$(".show_label").html(data.label);
 					$(".hidden_val").val(data.value);
 				}
-				self.options.parent.find('.oSbox').append('<li data-value="'+data.value+'">'+data.label+'</li>');
+				self.options.parent.find('.oSbox').append('<li data-value="'+data.value+'"><i></i> <span>'+data.label+'</span></li>');
 			});
 			
 			if(defaultValue && self.options.localData.length>0){
@@ -78,7 +78,7 @@ if(typeof DropdownBox=="undefined" || !DropdownBox){
 					self.options.localData = datas;
 				}
 				$.each(self.options.localData, function(i, data){
-					oSbox.append('<li data-value="'+data.value+'">'+data.label+'</li>');
+					oSbox.append('<li data-value="'+data.value+'"><i></i><span>'+data.label+'</span></li>');
 				});
 				$(this).find('.oSbox').toggle();
 				e.stopPropagation();
@@ -120,7 +120,7 @@ if(typeof DropdownBox=="undefined" || !DropdownBox){
 					
 				oSbox.find('li').remove();
 				$.each(grepData, function(i, data){
-					oSbox.append('<li data-value="'+data.value+'">'+data.label+'</li>');
+					oSbox.append('<li data-value="'+data.value+'"><i></i>'+data.label+'</li>');
 				});
 				e.stopPropagation();
 			});
@@ -136,7 +136,7 @@ if(typeof DropdownBox=="undefined" || !DropdownBox){
 				});
 				
 				$.each(self.options.localData, function(i, data){
-					oSbox.append('<li data-value="'+data.value+'">'+data.label+'</li>');
+					oSbox.append('<li data-value="'+data.value+'"><i></i>'+data.label+'</li>');
 				});
 				e.stopPropagation();
 			});

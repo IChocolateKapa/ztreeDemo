@@ -6,6 +6,7 @@
 .fm_select>span>em.refresh_img{background-position: 0 -885px;cursor: pointer;}
 .oSbox{box-sizing: inherit;border: 1px solid #EBEBEB;border-radius: 5px;width: 515px;display: block;position: absolute;background: #fff;z-index: 100;max-height: 250px;overflow-y: auto;margin-top: -1px;padding:8px 0;display:none;}
 .oSbox>li{margin:0 10px;padding:0 10px 0 15px;}
+.oSbox>li i{background-image: url("../img/auth.png"); background-repeat: no-repeat; display: inline-block; width: 16px; height: 16px; position: relative;top: 3px; right: 8px;}
 .oSbox>li:hover{background-color:#BCDDF1;}
 .oSbox .slt_srch_box{box-sizing: inherit;margin:0 10px 10px;}
 .oSbox .slt_srch_ipt{box-sizing: inherit;height: 27px;border-radius: 5px;display: block;padding: 0 10px 0 15px;width: 100%;}
