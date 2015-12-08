@@ -39,7 +39,7 @@ var setting = {
 function beforeRemove (treeId, treeNode) {
     var zTree = $.fn.zTree.getZTreeObj("treeDemo");
     zTree.selectNode(treeNode);
-    var confirmTip = confirm("确认删除 节点 -- " + treeNode.name + " 吗？");
+    var confirmTip = confirm("确认删除 权限 -- " + treeNode.name + " 吗？");
 
 
     if (confirmTip) {
@@ -64,7 +64,7 @@ function beforeRemove (treeId, treeNode) {
             method.second_order = second_order;
 
 
-            /*$.ajax({
+           /* $.ajax({
              //url: 'http://fvp.58corp.com/user_admin.php',
              url: 'http://10.9.17.55:8080/user_admin.php',
              type: 'post',
@@ -72,9 +72,17 @@ function beforeRemove (treeId, treeNode) {
              data: method,
              dataType: 'json',
              success: function(data, textStatus) {
-             console.log("method: ", method);
+                 console.log("method: ", method);
+                 treeNode.checked = false;
+                 treeNode.checkedOld = false;
+                zTree.updateNode(treeNode);
              }
              });*/
+
+            treeNode.checked = false;
+            treeNode.checkedOld = false;
+            zTree.updateNode(treeNode);
+            return false;
         }
     }
 }
