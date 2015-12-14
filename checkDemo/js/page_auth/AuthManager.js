@@ -76,24 +76,6 @@ var AuthManager =  {
             fir_sec_orders = plat[type],
             zNodes = [];
 
-
-        /*var authOwnedList = [
-            {
-                first_order: "page_detail",
-                second_order: "pvuv"
-            },
-            {
-                "first_order": "visitview",
-                "second_order": "visit_time"
-            },
-            {
-                "first_order": "visitview",
-                "second_order": "visit_depth"
-            }
-        ];*/
-
-
-
         for (var i = 0; i < fir_sec_orders.length; i++) {
 
             var first_order = fir_sec_orders[i].first_order.value,
@@ -238,18 +220,19 @@ var AuthManager =  {
 
 
                     /*向秀玉姐发送请求，批量删除权限*/
-                    /* $.ajax({
-                     //                                 url: 'http://fvp.58corp.com/user_admin.php',
-                     //                                 url: 'http://10.9.17.55:8080/user_admin.php',
-                     type: 'post',
-                     async: true,
-                     data: method3,
-                     dataType: 'json',
-                     success: function(data, textStatus) {
-                     console.log("method: ", method);
-                     }
-                     });*/
-
+                     $.ajax({
+                         //                                 url: 'http://fvp.58corp.com/user_admin.php',
+                         //                                 url: 'http://10.9.17.55:8080/user_admin.php',
+                         type: 'post',
+                         async: true,
+                         data: method3,
+                         dataType: 'json',
+                         success: function(data, textStatus) {
+                             if (data.status !== "success") {
+                                 alert("删除发生问题！");
+                             }
+                         }
+                     });
                 }
             })(j);
         }
@@ -259,7 +242,8 @@ var AuthManager =  {
     * 获取返回的权限信息与所有信息对比的，ifchecked
     * */
 
-    getCheckedNodes: function () {
+    getUserCheckedNodes: function (method) {
+
         var authOwnedList = [
             {
                 first_order: "page_detail",
@@ -275,7 +259,23 @@ var AuthManager =  {
             }
         ];
 
+        $.extend(true, method, {
+            'operate': 'select',
+            'type': 2
+        });
         //与
+         $.ajax({
+             //                                 url: 'http://fvp.58corp.com/user_admin.php',
+             //                                 url: 'http://10.9.17.55:8080/user_admin.php',
+             type: 'post',
+             async: true,
+             data: method,
+             dataType: 'json',
+             success: function(data, textStatus) {
+                console.log("method: ", method);
+             }
+         });
+
 
     }
 };

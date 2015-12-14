@@ -4,6 +4,23 @@
 
 /*在这个js中写一些ajax之类的操作*/
 
+function debounce (wait, immediate) {
+    var timeout,
+        func = this;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
+
 
 var setting = {
     check: {
@@ -111,7 +128,6 @@ function callBackInitZNodes (plat_name) {
         /*
          * 发送请求，获取该plat_name和biz_name之下的权限信息
          * */
-        //$.ajax({});
         var authOwnedList = [
          {
          first_order: "page_detail",
@@ -131,11 +147,33 @@ function callBackInitZNodes (plat_name) {
          }
          ];
 
-        var zNodes = AuthManager.initZNodesList(plat_name, biz_name, authOwnedList);
+        $.ajax({
+            //                                 url: 'http://fvp.58corp.com/user_admin.php',
+            url: 'http://10.9.17.55:8080/user_admin.php',
+            type: 'post',
+            async: true,
+            data: {
+                'operate': 'select',
+                'type': 2,
+                'biz_name': biz_name,
+                'user_name': $("#user_name").val(),
+                'plat_name': plat_name
+            },
+            dataType: 'json',
+            success: function(data, textStatus) {
+                if (data.status !== "succcess") {
+                    alert("查找数据失败");
+                    return;
+                } else {
+                    var zNodes = AuthManager.initZNodesList(plat_name, biz_name, data.data);
 
-        $(".authTree").removeClass("dead");
-        var treeObj = $("#treeDemo");
-        $.fn.zTree.init(treeObj, setting, zNodes);
+                    $(".authTree").removeClass("dead");
+                    var treeObj = $("#treeDemo");
+                    $.fn.zTree.init(treeObj, setting, zNodes);
+                }
+            }
+        });
+
     });
 
 }
@@ -168,12 +206,39 @@ $(function(){
 
     /*输入名字时进行模糊查询*/
     $("#user_name").keyup(function () {
-        var user = this.value;
+        var _this = this;
+        var user = _this.value;
+
         if (user === "") {
             $(".query_box").empty().fadeOut(500);
             return false;
         }
-        var ret = Math.floor(Math.random()*100)%2 == 0? true: false;
+
+         $.ajax({
+             //url: 'http://fvp.58corp.com/user_admin.php',
+             //url: 'http://10.9.17.55:8080/user_admin.php',
+             type: 'post',
+             async: true,
+             data: {
+                 'operate': 'select',
+                 'type': 3,
+                 'user_name': user
+             },
+             dataType: 'json',
+             success: function(data, textStatus) {
+                 if (data.status !== "success") {
+                     return;
+                 }
+                 var nameList = data.user_list.split(","),
+                     nameHtml = "";
+                 for (var i = 0; i < nameList.length; i++) {
+                     var name = nameList[i];
+                     nameHtml += "<a href='javascript:void(0)'>" + name + "</a>";
+                 }
+                 $(".query_box").html(nameHtml).fadeIn(500);
+             }
+         });
+        /*var ret = Math.floor(Math.random()*100)%2 == 0? true: false;
         if (ret) {
             var nameStr = "liushaohua,liuweiwei,wangliuxian,wuliuan",
                 nameList = nameStr.split(","),
@@ -182,8 +247,9 @@ $(function(){
                 var name = nameList[i];
                 nameHtml += "<a href='javascript:void(0)'>" + name + "</a>";
             }
-            $(".query_box").html(nameHtml).fadeIn(500);
-        }
+            $(".query_box").html(nameHtml).fadeIn(0);
+            //console.log("kkkkkk")
+        }*/
 
     }).keydown(function () {
         var user = this.value;
