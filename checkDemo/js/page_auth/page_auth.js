@@ -81,20 +81,20 @@ function beforeRemove (treeId, treeNode) {
             method.second_order = second_order;
 
 
-           /* $.ajax({
-             //url: 'http://fvp.58corp.com/user_admin.php',
-             url: 'http://10.9.17.55:8080/user_admin.php',
-             type: 'post',
-             async: true,
-             data: method,
-             dataType: 'json',
-             success: function(data, textStatus) {
-                 console.log("method: ", method);
-                 treeNode.checked = false;
-                 treeNode.checkedOld = false;
-                zTree.updateNode(treeNode);
-             }
-             });*/
+            $.ajax({
+                 //url: 'http://fvp.58corp.com/user_admin.php',
+                 //url: 'http://10.9.17.55:8080/user_admin.php',
+                 type: 'post',
+                 async: true,
+                 data: method,
+                 dataType: 'json',
+                 success: function(data, textStatus) {
+                     console.log("method: ", method);
+                     treeNode.checked = false;
+                     treeNode.checkedOld = false;
+                    zTree.updateNode(treeNode);
+                 }
+             });
 
             treeNode.checked = false;
             treeNode.checkedOld = false;
@@ -122,6 +122,12 @@ function callBackInitZNodes (plat_name) {
     var biz_names = PLAT_BIZ_NAMES[plat_name];
     var localData = AuthManager.handleLocalData(biz_names);
     AuthManager.initDropdown($('#selectDatasetType'), localData, function () {
+
+        if ($("#user_name").val() === "") {
+            $("#user_name").css({"background":"salmon"});
+            return;
+        }
+
         /*获取选中业务线值*/
         var biz_name = this.value();
         sessionStorage.biz_name_w = biz_name;
@@ -208,6 +214,8 @@ $(function(){
     $("#user_name").keyup(function () {
         var _this = this;
         var user = _this.value;
+
+        $("#user_name").css({"background":"white"});
 
         if (user === "") {
             $(".query_box").empty().fadeOut(500);
