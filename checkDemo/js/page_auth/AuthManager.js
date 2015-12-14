@@ -129,6 +129,131 @@ var AuthManager =  {
         return zNodes;
 
     },
+    /*
+    * 处理树节点操作： 删除 或者 新增
+    * */
+     handleZtree: function (method) {
+         var method2 = {};
+         $.extend(true, method2, method);
+
+
+         var zTree_Menu = $.fn.zTree.getZTreeObj("treeDemo");
+         if (!zTree_Menu) return;
+         var checkedNodes = zTree_Menu.getCheckedNodes();
+
+         method2.user_name = $("#user_name").val();
+         method2.vp_name = sessionStorage.vp_name_w? sessionStorage.vp_name_w: "gengxiuyu";
+         method2.plat_name = sessionStorage.plat_name_w? sessionStorage.plat_name_w: "58";
+         method2.biz_name = sessionStorage.biz_name_w? sessionStorage.biz_name_w: "page_detail";
+
+         var isUpdate = method.operate === "delete"? true: false;
+
+         for (var j = 0; j < checkedNodes.length; j++) {
+
+             (function (i) {
+                 var level = checkedNodes[i].level;
+
+                 /*1级节点处理方式*/
+                 if (level == 0) {
+    //                        continue;
+                    /*一级节点处理方式*/
+                    /*if (checkedNodes[i].children) {
+                     var sec_list = checkedNodes[i].children;
+
+                     if (isUpdate) {
+                     checkedNodes[i].checked = false;
+                     checkedNodes[i].checkedOld = false;
+                     zTree_Menu.updateNode(checkedNodes[i]);
+                     }
+
+                     method.first_order = order;
+
+                     var secStr = "";
+                     for (var j = 0; j < sec_list.length; j++) {
+                     //不是之前已有权限不会发送删除命令
+                     //                        if (sec_list[j].checked && isUpdate) {
+                     if (isUpdate) {
+                     if (sec_list[j].checked && sec_list[j].checkedOld) {
+                     secStr += sec_list[j].description + ",";
+                     sec_list[j].checked = false;
+                     sec_list[j].checkedOld = false;
+                     zTree_Menu.updateNode(sec_list[j]);
+                     }
+                     } else {
+                     if (sec_list[j].checked && !sec_list[j].checkedOld) {
+                     //                                method.first_order = order;
+                     //                                method.second_order = sec_list[j].description;
+                     secStr += sec_list[j].description + ",";
+                     }
+                     }
+
+                     }
+                     if (secStr) {
+                     method.second_order = secStr.substring(0, secStr.length - 1);
+                     } else {
+                     continue;
+                     }
+                     }*/
+                 } else {
+
+                     var method3 = {},
+                         order,
+                         parNode;
+
+                     if (isUpdate) {
+                         if (checkedNodes[i].checked && checkedNodes[i].checkedOld) {
+                             order = checkedNodes[i].description;
+                             parNode = checkedNodes[i].getParentNode();
+
+
+                             method3.first_order = parNode.description;
+                             method3.second_order = order;
+
+                             $.extend(true, method3, method2);
+
+                             console.log(method3);
+
+                             checkedNodes[i].checked = false;
+                             checkedNodes[i].checkedOld = false;
+                             zTree_Menu.updateNode(checkedNodes[i]);
+                             zTree_Menu.refresh();
+
+                         }
+                     } else {
+                         if (checkedNodes[i].checked && !checkedNodes[i].checkedOld) {
+                             order = checkedNodes[i].description;
+                             parNode = checkedNodes[i].getParentNode();
+
+
+                             method3.first_order = parNode.description;
+                             method3.second_order = order;
+
+                             $.extend(true, method3, method2);
+
+                             console.log(method3);
+
+                         }
+                     }
+
+
+
+                    /*向秀玉姐发送请求，批量删除权限*/
+                    /* $.ajax({
+                     //                                 url: 'http://fvp.58corp.com/user_admin.php',
+                     //                                 url: 'http://10.9.17.55:8080/user_admin.php',
+                     type: 'post',
+                     async: true,
+                     data: method3,
+                     dataType: 'json',
+                     success: function(data, textStatus) {
+                     console.log("method: ", method);
+                     }
+                     });*/
+
+                }
+            })(j);
+        }
+    },
 
     /*
     * 获取返回的权限信息与所有信息对比的，ifchecked

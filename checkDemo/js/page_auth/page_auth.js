@@ -82,8 +82,11 @@ function beforeRemove (treeId, treeNode) {
             treeNode.checked = false;
             treeNode.checkedOld = false;
             zTree.updateNode(treeNode);
+            zTree.refresh();
             return false;
         }
+    } else {
+        return false;
     }
 }
 function showRemoveBtn (treeId, treeNode) {
