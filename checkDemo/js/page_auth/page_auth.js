@@ -167,16 +167,19 @@ function callBackInitZNodes (plat_name) {
             },
             dataType: 'json',
             success: function(data, textStatus) {
-                if (data.status !== "succcess") {
-                    alert("查找数据失败");
-                    return;
+                var dataList = '';
+                if (data.status !== "success" && data.rows_count == 0) {
+                    //alert("查找数据失败");
+                    dataList = ''
                 } else {
-                    var zNodes = AuthManager.initZNodesList(plat_name, biz_name, data.data);
-
-                    $(".authTree").removeClass("dead");
-                    var treeObj = $("#treeDemo");
-                    $.fn.zTree.init(treeObj, setting, zNodes);
+                    dataList = data.data;
                 }
+
+                var zNodes = AuthManager.initZNodesList(plat_name, biz_name, dataList);
+
+                $(".authTree").removeClass("dead");
+                var treeObj = $("#treeDemo");
+                $.fn.zTree.init(treeObj, setting, zNodes);
             }
         });
 
